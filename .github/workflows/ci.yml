@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  matlab:
+    name: Matlab
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up MATLAB
+      uses: matlab-actions/setup-matlab@v1
+    - name: Run main script
+      uses: matlab-actions/run-command@v1
+      with:
+        command: main
+    - name: Run tests and generate artifacts
+      uses: matlab-actions/run-tests@v1
+      with:
+        test-results-junit: test-results/results.xml
+        code-coverage-cobertura: code-coverage/coverage.xml
+  octave:
+    name: Octave
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Octave
+      shell: bash
+      run: sudo apt update -yy && sudo apt install -yy octave
+    - name: Run main script
+      shell: bash
+      run: octave main.m
+    - name: Run tests
+      shell: bash
+      run: octave +adder/test*.m
