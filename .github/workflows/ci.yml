@@ -18,11 +18,10 @@ jobs:
       uses: matlab-actions/run-command@v1
       with:
         command: main
-    - name: Run tests and generate artifacts
-      uses: matlab-actions/run-tests@v1
+    - name: Run tests
+      uses: matlab-actions/run-command@v1
       with:
-        test-results-junit: test-results/results.xml
-        code-coverage-cobertura: code-coverage/coverage.xml
+        command: assertSuccess(runtests('adder'))
   octave:
     name: Octave
     runs-on: ubuntu-latest
